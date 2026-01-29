@@ -613,6 +613,28 @@
                 explanation: "Deepfakes sind mithilfe von KI erstellte oder manipulierte Audio-, Video- oder Bildinhalte, die täuschend echt wirken können. Sie werden zunehmend für Betrug, Desinformation und Social Engineering eingesetzt."
             },
             {
+    question: "Ist dies ein Deepfake?",
+    type: "video",
+    videoUrl: "videos/deepfake_video_1.mp4",
+    options: "Nein, des Video ist legitim",
+        "Ja, dies ist ein Deepfake-Video",
+        "Unsicher, weitere Überprüfung nötig",
+    correct: 1,
+    explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
+},
+            
+            {
+    question: "Ist dies ein Deepfake?",
+    type: "video",
+    videoUrl: "videos/deepfake_video_2.mp4",
+    videoCaption: "Achte besonders auf die Augen und den Mund",
+    options: "Nein, des Video ist legitim",
+        "Ja, dies ist ein Deepfake-Video",
+        "Unsicher, weitere Überprüfung nötig",
+    correct: 1,
+    explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
+},
+            {
                 question: "Was solltest du tun, wenn du einen verdächtigen Link in einer E-Mail siehst?",
                 options: [
                     "Sofort darauf klicken, um zu prüfen",
@@ -623,6 +645,20 @@
                 correct: 1,
                 explanation: "Fahre mit der Maus über Links (ohne zu klicken), um die tatsächliche Ziel-URL zu sehen. Phishing-Links sehen oft legitim aus, führen aber zu gefälschten Websites. Im Zweifelsfall die Website direkt über den Browser aufrufen."
             },
+            {
+                question: "Analysiere diese E-Mail: Ist dies ein Phishing-Versuch?",
+                type: "image",
+                imageUrl: "images/phishing_email_2.png",
+                imageCaption: "Screenshot einer verdächtigen E-Mail",
+                options: [
+        "Nein, die E-Mail ist legitim",
+        "Ja, dies ist ein Phishing-Versuch",
+        "Unsicher, weitere Überprüfung nötig",
+        "Es ist Spam, aber kein Phishing"
+    ],
+    correct: 1,
+    explanation: "Diese E-Mail ist Phishing weil: 1) Ähnliche, aber falsche Absenderadresse, 2) Falsches Logo der Firma/Behörde, 3) Generische Anrede, 4) Rechtschreibfehler, 5) Dringlichkeit, 6) Gefälschter Link, 7) Falscher Name am Ende der E-Mail"
+},
             {
                 question: "Wie oft solltest du wichtige Passwörter ändern?",
                 options: [
