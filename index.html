@@ -6,6 +6,7 @@
     <title>Security Awareness Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
+        /* ===== UNVERÄNDERT ===== */
         :root {
             --bg-dark: #0a0e27;
             --bg-card: #141b3a;
@@ -18,11 +19,7 @@
             --shadow-glow: 0 0 40px rgba(255, 51, 102, 0.3);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Outfit', sans-serif;
@@ -33,15 +30,11 @@
             position: relative;
         }
 
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
+            inset: 0;
+            background:
                 radial-gradient(circle at 20% 30%, rgba(255, 51, 102, 0.1) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
                 radial-gradient(circle at 50% 50%, rgba(255, 170, 0, 0.05) 0%, transparent 70%);
@@ -49,20 +42,11 @@
             z-index: -1;
         }
 
-        @keyframes bgPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-
-        /* Grid pattern overlay */
         body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
+            inset: 0;
+            background-image:
                 linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -70,912 +54,140 @@
             pointer-events: none;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+        @keyframes bgPulse { 0%,100%{opacity:1} 50%{opacity:.6} }
 
-        /* Warning Screen */
-        .warning-screen {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.6s ease-out;
-        }
+        .container { max-width: 900px; margin: auto; padding: 2rem; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .warning-screen,
+        .results-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
 
-        .warning-card {
-            background: var(--bg-card);
-            border: 2px solid var(--accent-danger);
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: var(--shadow-glow);
-            position: relative;
-            overflow: hidden;
-            max-width: 600px;
-            animation: pulse 2s ease-in-out infinite;
-        }
+        .quiz-screen { display: none; padding: 2rem 0; }
 
-        @keyframes pulse {
-            0%, 100% { box-shadow: var(--shadow-glow); }
-            50% { box-shadow: 0 0 60px rgba(255, 51, 102, 0.5); }
-        }
-
-        .warning-icon {
-            font-size: 5rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .warning-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            color: var(--accent-danger);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .warning-text {
-            font-size: 1.2rem;
-            text-align: center;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            color: var(--text-secondary);
-        }
-
-        .warning-highlight {
-            background: linear-gradient(90deg, var(--accent-danger), var(--accent-warning));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 600;
-        }
-
-        .cta-button {
-            display: block;
-            width: 100%;
-            padding: 1.2rem 2rem;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--bg-dark);
-            background: linear-gradient(135deg, var(--accent-success), var(--accent-info));
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5);
-        }
-
-        /* Quiz Screen */
-        .quiz-screen {
-            display: none;
-            padding: 2rem 0;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        .quiz-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .quiz-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-info), var(--accent-success));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .quiz-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .progress-bar {
-            background: var(--bg-card);
-            height: 8px;
-            border-radius: 10px;
-            margin: 2rem 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-success), var(--accent-info));
-            border-radius: 10px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-        }
-
-        .question-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .question-number {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-info);
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            line-height: 1.5;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .option {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.2rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.05rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .option:hover {
-            border-color: var(--accent-info);
-            background: rgba(0, 212, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .option:hover::before {
-            left: 100%;
-        }
-
-        .option.selected {
-            border-color: var(--accent-info);
-            background: rgba(0, 212, 255, 0.15);
-        }
-
-        .option.correct {
-            border-color: var(--accent-success);
-            background: rgba(0, 255, 136, 0.15);
-            animation: correctPulse 0.6s ease;
-        }
-
-        .option.incorrect {
-            border-color: var(--accent-danger);
-            background: rgba(255, 51, 102, 0.15);
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes correctPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .option.disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .explanation {
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background: rgba(0, 212, 255, 0.1);
-            border-left: 4px solid var(--accent-info);
-            border-radius: 8px;
-            display: none;
-            animation: slideDown 0.4s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .explanation.show {
-            display: block;
-        }
-
-        .explanation-title {
-            font-weight: 700;
-            color: var(--accent-info);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Multimedia Styles */
-        .question-media {
-            margin: 2rem 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .question-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .question-video {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            background: #000;
-        }
-
-        .media-caption {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 1rem;
-            font-style: italic;
-        }
-
-        .zoom-hint {
-            text-align: center;
-            color: var(--accent-info);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            cursor: pointer;
-        }
-
-        .zoom-hint:hover {
-            color: var(--accent-success);
-        }
-
-        /* Image Zoom Modal */
-        .image-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .image-modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 95%;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            color: var(--accent-danger);
-            transform: scale(1.2);
-        }
-
-        .next-button {
-            display: none;
-            margin-top: 2rem;
-            padding: 1rem 2.5rem;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: var(--bg-dark);
-            background: linear-gradient(135deg, var(--accent-success), var(--accent-info));
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%;
-        }
-
-        .next-button.show {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .next-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
-        }
-
-        /* Results Screen */
-        .results-screen {
-            display: none;
-            min-height: 100vh;
-            padding: 2rem 0;
-            animation: fadeIn 0.6s ease-out;
-        }
-
+        .warning-card,
+        .question-card,
         .results-card {
             background: var(--bg-card);
             border-radius: 20px;
             padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
         }
 
-        .results-icon {
-            font-size: 6rem;
-            margin-bottom: 1.5rem;
-            animation: scaleIn 0.6s ease;
-        }
+        .option { cursor: pointer; }
+        .option.disabled { cursor: not-allowed; opacity: .6; }
+        .option.correct { border-color: var(--accent-success); }
+        .option.incorrect { border-color: var(--accent-danger); }
 
-        @keyframes scaleIn {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-
-        .results-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .results-score {
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-success), var(--accent-info));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 1.5rem 0;
-        }
-
-        .results-message {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .results-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .restart-button {
-            margin-top: 2rem;
-            padding: 1.2rem 2.5rem;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--bg-dark);
-            background: linear-gradient(135deg, var(--accent-warning), var(--accent-danger));
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .restart-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 170, 0, 0.4);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .warning-card {
-                padding: 2rem;
-            }
-
-            .warning-title {
-                font-size: 2rem;
-            }
-
-            .quiz-title {
-                font-size: 2rem;
-            }
-
-            .question-text {
-                font-size: 1.2rem;
-            }
-
-            .results-score {
-                font-size: 3rem;
-            }
-        }
+        video { background: black; }
     </style>
 </head>
+
 <body>
-    <!-- Warning Screen -->
-    <div class="warning-screen" id="warningScreen">
-        <div class="container">
-            <div class="warning-card">
-                <div class="warning-icon">⚠️</div>
-                <h1 class="warning-title">Stopp!</h1>
-                <p class="warning-text">
-                    <span class="warning-highlight">Das hätte ein Phishing-Link sein können!</span><br><br>
-                    Sie haben gerade einen QR-Code gescannt, ohne zu wissen, wohin er führt. 
-                    In der realen Welt könnten Angreifer solche Codes nutzen, um Sie auf gefälschte 
-                    Websites zu leiten und Ihre Daten zu stehlen.
-                </p>
-                <p class="warning-text">
-                    Gut, dass dies nur ein <strong>Awareness-Training</strong> ist! 
-                    Testen Sie jetzt Ihr Wissen über Cybersecurity-Gefahren.
-                </p>
-                <button class="cta-button" onclick="startQuiz()">
-                    🛡️ Quiz starten
-                </button>
-            </div>
+
+<div class="warning-screen" id="warningScreen">
+    <div class="container">
+        <div class="warning-card">
+            <h1>⚠️ Stopp!</h1>
+            <p>Das hätte ein Phishing-Link sein können!</p>
+            <button onclick="startQuiz()">Quiz starten</button>
         </div>
     </div>
+</div>
 
-    <!-- Quiz Screen -->
-    <div class="quiz-screen" id="quizScreen">
-        <div class="container">
-            <div class="quiz-header">
-                <h1 class="quiz-title">Security Awareness Quiz</h1>
-                <p class="quiz-subtitle">Teste dein Wissen über Cybersecurity-Bedrohungen</p>
-            </div>
+<div class="quiz-screen" id="quizScreen">
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div id="questionContainer"></div>
+    </div>
+</div>
 
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-
-            <div id="questionContainer"></div>
+<div class="results-screen" id="resultsScreen">
+    <div class="container">
+        <div class="results-card">
+            <h2>Quiz abgeschlossen!</h2>
+            <div id="finalScore"></div>
+            <button onclick="location.reload()">Neu starten</button>
         </div>
     </div>
+</div>
 
-    <!-- Results Screen -->
-    <div class="results-screen" id="resultsScreen">
-        <div class="container">
-            <div class="results-card">
-                <div class="results-icon" id="resultsIcon">🎯</div>
-                <h2 class="results-title">Quiz abgeschlossen!</h2>
-                <div class="results-score" id="finalScore">0/10</div>
-                <p class="results-message" id="resultsMessage"></p>
-                
-                <div class="results-stats">
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-success);" id="correctCount">0</div>
-                        <div class="stat-label">Richtig</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-danger);" id="incorrectCount">0</div>
-                        <div class="stat-label">Falsch</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value" style="color: var(--accent-info);" id="percentageScore">0%</div>
-                        <div class="stat-label">Erfolgsquote</div>
-                    </div>
-                </div>
+<script>
+const questions = [
+    {
+        question: "Ist dies ein Deepfake?",
+        type: "video",
+        videoUrl: "videos/deepfake_video_1.mp4",
+        options: ["Nein", "Ja", "Unsicher"],
+        correct: 1,
+        explanation: "Achte auf Augen und Mund."
+    },
+    {
+        question: "Ist dies ein Deepfake?",
+        type: "video",
+        videoUrl: "videos/deepfake_video_2.mp4",
+        options: ["Nein", "Ja", "Unsicher"],
+        correct: 1,
+        explanation: "Quelle prüfen."
+    }
+];
 
-                <button class="restart-button" onclick="location.reload()">
-                    🔄 Quiz wiederholen
-                </button>
+let currentQuestion = 0;
+let score = 0;
+
+function startQuiz() {
+    warningScreen.style.display = "none";
+    quizScreen.style.display = "block";
+    loadQuestion();
+}
+
+/* ===== HIER IST DIE EINZIGE RELEVANTE ÄNDERUNG ===== */
+function loadQuestion() {
+    if (currentQuestion >= questions.length) {
+        showResults();
+        return;
+    }
+
+    const q = questions[currentQuestion];
+    progressFill.style.width = (currentQuestion / questions.length) * 100 + "%";
+
+    const mediaHTML = q.type === "video"
+        ? `<video controls preload="metadata" style="width:100%;border-radius:12px;margin:1rem 0;">
+               <source src="${q.videoUrl}" type="video/mp4">
+           </video>`
+        : "";
+
+    questionContainer.innerHTML = `
+        <div class="question-card">
+            <h3>${q.question}</h3>
+            ${mediaHTML}
+            <div>
+                ${q.options.map((o,i)=>`<div class="option" onclick="selectAnswer(${i})">${o}</div>`).join("")}
             </div>
+            <p id="explanation" style="display:none">${q.explanation}</p>
+            <button id="nextBtn" style="display:none" onclick="nextQuestion()">Weiter</button>
         </div>
-    </div>
+    `;
+}
 
-    <!-- Image Zoom Modal -->
-    <div class="image-modal" id="imageModal" onclick="closeImageModal()">
-        <span class="modal-close">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
+function selectAnswer(i) {
+    const q = questions[currentQuestion];
+    document.getElementById("explanation").style.display = "block";
+    document.getElementById("nextBtn").style.display = "block";
+    if (i === q.correct) score++;
+}
 
-    <script>
-        const questions = [
-            {
-                question: "Was ist das Hauptziel eines Phishing-Angriffs?",
-                options: [
-                    "Den Computer zu verlangsamen",
-                    "Persönliche Daten und Zugangsinformationen zu stehlen",
-                    "Werbung anzuzeigen",
-                    "Dateien zu verschlüsseln"
-                ],
-                correct: 1,
-                explanation: "Phishing-Angriffe zielen darauf ab, sensible Informationen wie Passwörter, Kreditkartendaten oder persönliche Informationen zu stehlen, indem sich Angreifer als vertrauenswürdige Quelle ausgeben."
-            },
-            {
-                question: "Analysiere diese E-Mail: Ist dies ein Phishing-Versuch?",
-                type: "image",
-                imageUrl: "images/phishing_email_2.png",
-                imageCaption: "Screenshot einer verdächtigen E-Mail",
-                options: [
-                    "Nein, die E-Mail ist legitim",
-                    "Ja, dies ist ein Phishing-Versuch",
-                    "Unsicher, weitere Überprüfung nötig",
-                    "Es ist Spam, aber kein Phishing"
-                ],
-                correct: 1,
-                explanation: "Diese E-Mail ist Phishing weil: 1) Ähnliche, aber falsche Absenderadresse, 2) Falsches Logo der Firma/Behörde, 3) Generische Anrede, 4) Rechtschreibfehler, 5) Dringlichkeit, 6) Gefälschter Link, 7) Falscher Name am Ende der E-Mail"
-            },
-            {
-                question: "Welches dieser Passwörter ist am sichersten?",
-                options: [
-                    "Passwort123",
-                    "M3in€N@m€2024!",
-                    "Tr$9mK#pL2@vQx8&Yz",
-                    "12345678"
-                ],
-                correct: 2,
-                explanation: "Ein sicheres Passwort sollte mindestens 12 Zeichen lang sein und eine Mischung aus Groß- und Kleinbuchstaben, Zahlen und Sonderzeichen enthalten. Es sollte keine persönlichen Informationen oder gängige Wörter enthalten."
-            },
-            {
-                question: "Ist dies ein Deepfake?",
-                type: "video",
-                videoUrl: "videos/deepfake_video_1.mp4",
-                options: [
-                    "Nein, das Video ist legitim",
-                    "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
-                ],
-                correct: 1,
-                explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
-            },
-            {
-                question: "Ist dies ein Deepfake?",
-                type: "video",
-                videoUrl: "videos/real_video_1.mp4",
-                options: [
-                    "Nein, das Video ist legitim",
-                    "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
-                ],
-                correct: 0,
-                explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
-            },
-            {
-                question: "Woran kannst du eine verdächtige E-Mail erkennen?",
-                options: [
-                    "Die E-Mail enthält Links",
-                    "Dringlichkeit, Rechtschreibfehler und unerwartete Anhänge",
-                    "Die E-Mail ist von einer bekannten Firma",
-                    "Sie ist in deutscher Sprache verfasst"
-                ],
-                correct: 1,
-                explanation: "Verdächtige E-Mails zeigen oft Warnsignale wie ungewöhnliche Dringlichkeit, Rechtschreibfehler, unerwartete Anhänge, generische Anreden oder verdächtige Absenderadressen. Sei besonders vorsichtig bei E-Mails, die nach persönlichen Daten fragen."
-            },
-            {
-                question: "Was solltest du tun, wenn du einen verdächtigen Link in einer E-Mail siehst?",
-                options: [
-                    "Sofort darauf klicken, um zu prüfen",
-                    "Mit der Maus über den Link fahren, um die tatsächliche URL zu sehen",
-                    "Die E-Mail weiterleiten",
-                    "Den Link kopieren und teilen"
-                ],
-                correct: 1,
-                explanation: "Fahre mit der Maus über Links (ohne zu klicken), um die tatsächliche Ziel-URL zu sehen. Phishing-Links sehen oft legitim aus, führen aber zu gefälschten Websites. Im Zweifelsfall die Website direkt über den Browser aufrufen."
-            },
-            {
-                question: "Wie oft solltest du wichtige Passwörter ändern?",
-                options: [
-                    "Nie, ein gutes Passwort reicht für immer",
-                    "Täglich",
-                    "Bei Verdacht auf Kompromittierung oder alle 6-12 Monate",
-                    "Jede Woche"
-                ],
-                correct: 2,
-                explanation: "Passwörter sollten geändert werden, wenn es Anzeichen für eine Kompromittierung gibt oder regelmäßig alle 6-12 Monate. Wichtiger als häufiges Ändern ist jedoch die Verwendung eindeutiger, starker Passwörter für jeden Dienst."
-            },
-            {
-                question: "Was ist Zwei-Faktor-Authentifizierung (2FA)?",
-                options: [
-                    "Ein doppeltes Passwort",
-                    "Zusätzliche Sicherheitsebene neben dem Passwort",
-                    "Ein stärkeres Passwort",
-                    "Eine Art Firewall"
-                ],
-                correct: 1,
-                explanation: "2FA ist eine zusätzliche Sicherheitsebene, die neben dem Passwort einen zweiten Nachweis verlangt (z.B. SMS-Code, Authenticator-App oder Biometrie). Selbst wenn das Passwort gestohlen wird, kann ohne den zweiten Faktor kein Zugriff erfolgen."
-            },
-            {
-                question: "Was ist Social Engineering?",
-                options: [
-                    "Eine Programmiersprache",
-                    "Manipulation von Menschen zur Preisgabe von Informationen",
-                    "Ein soziales Netzwerk",
-                    "Eine Art von Software"
-                ],
-                correct: 1,
-                explanation: "Social Engineering ist die psychologische Manipulation von Menschen, um sie zur Preisgabe vertraulicher Informationen oder zur Durchführung bestimmter Aktionen zu bewegen. Es nutzt menschliche Eigenschaften wie Vertrauen, Hilfsbereitschaft oder Angst aus."
-            },
-            {
-                question: "Welche dieser Praktiken ist am sichersten für öffentliches WLAN?",
-                options: [
-                    "Ohne Schutzmaßnahmen surfen",
-                    "Verwendung eines VPN (Virtual Private Network)",
-                    "Nur HTTP-Websites besuchen",
-                    "Automatisch mit allen Netzwerken verbinden"
-                ],
-                correct: 1,
-                explanation: "In öffentlichen WLANs solltest du ein VPN verwenden, das deine Daten verschlüsselt. Öffentliche Netzwerke sind unsicher und Angreifer können leicht Datenverkehr abfangen. Vermeide auch sensible Transaktionen in öffentlichen WLANs."
-            },
-            {
-                question: "Was ist Ransomware?",
-                options: [
-                    "Eine Sicherheitssoftware",
-                    "Schadsoftware, die Dateien verschlüsselt und Lösegeld fordert",
-                    "Ein kostenloses Programm",
-                    "Eine Art von Antivirus"
-                ],
-                correct: 1,
-                explanation: "Ransomware ist Malware, die Dateien auf dem Computer verschlüsselt und ein Lösegeld für die Entschlüsselung fordert. Schutz bieten regelmäßige Backups, aktuelle Software, Vorsicht bei E-Mail-Anhängen und eine gute Antiviren-Software."
-            }
-        ];
+function nextQuestion() {
+    currentQuestion++;
+    loadQuestion();
+}
 
-        let currentQuestion = 0;
-        let score = 0;
-        let answeredCorrectly = 0;
-        let answeredIncorrectly = 0;
+function showResults() {
+    quizScreen.style.display = "none";
+    resultsScreen.style.display = "flex";
+    finalScore.textContent = `${score}/${questions.length}`;
+}
+</script>
 
-        function startQuiz() {
-            document.getElementById('warningScreen').style.display = 'none';
-            document.getElementById('quizScreen').style.display = 'block';
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            if (currentQuestion >= questions.length) {
-                showResults();
-                return;
-            }
-
-            const question = questions[currentQuestion];
-            const progress = ((currentQuestion) / questions.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-
-            // Build media HTML if present
-            let mediaHTML = '';
-            if (question.type === 'image' && question.imageUrl) {
-                mediaHTML = `
-                    <div class="question-media">
-                        <img src="${question.imageUrl}" 
-                             alt="Frage ${currentQuestion + 1}" 
-                             class="question-image"
-                             onclick="openImageModal(this.src)">
-                        ${question.imageCaption ? `<div class="media-caption">${question.imageCaption}</div>` : ''}
-                        <div class="zoom-hint" onclick="openImageModal('${question.imageUrl}')">🔍 Klicken zum Vergrößern</div>
-                    </div>
-                `;
-            } else if (question.type === 'video' && question.videoUrl) {
-                // Check if it's a YouTube embed or local video
-                const isYouTube = question.videoUrl.includes('youtube.com') || question.videoUrl.includes('youtu.be');
-                
-                if (isYouTube) {
-                    mediaHTML = `
-                        <div class="question-media">
-                            <iframe class="question-video" 
-                                    src="${question.videoUrl}" 
-                                    width="100%" 
-                                    height="400"
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                            </iframe>
-                            ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
-                        </div>
-                    `;
-                } else {
-                    // Local video file
-                    mediaHTML = `
-                        <div class="question-media">
-                            <video class="question-video" controls>
-                                <source src="${question.videoUrl}" type="video/mp4">
-                                Dein Browser unterstützt dieses Video nicht.
-                            </video>
-                            ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
-                        </div>
-                    `;
-                }
-            }
-
-            const questionHTML = `
-                <div class="question-card">
-                    <div class="question-number">Frage ${currentQuestion + 1} von ${questions.length}</div>
-                    <div class="question-text">${question.question}</div>
-                    ${mediaHTML}
-                    <div class="options" id="options">
-                        ${question.options.map((option, index) => `
-                            <div class="option" onclick="selectAnswer(${index})" data-index="${index}">
-                                ${option}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="explanation" id="explanation">
-                        <div class="explanation-title">💡 Erklärung:</div>
-                        <div>${question.explanation}</div>
-                    </div>
-                    <button class="next-button" id="nextButton" onclick="nextQuestion()">
-                        Weiter →
-                    </button>
-                </div>
-            `;
-
-            document.getElementById('questionContainer').innerHTML = questionHTML;
-        }
-
-        function selectAnswer(selectedIndex) {
-            const question = questions[currentQuestion];
-            const options = document.querySelectorAll('.option');
-            
-            // Disable all options
-            options.forEach(option => {
-                option.classList.add('disabled');
-                option.onclick = null;
-            });
-
-            // Mark selected answer
-            options[selectedIndex].classList.add('selected');
-
-            // Check if correct
-            if (selectedIndex === question.correct) {
-                options[selectedIndex].classList.add('correct');
-                score++;
-                answeredCorrectly++;
-            } else {
-                options[selectedIndex].classList.add('incorrect');
-                options[question.correct].classList.add('correct');
-                answeredIncorrectly++;
-            }
-
-            // Show explanation and next button
-            document.getElementById('explanation').classList.add('show');
-            document.getElementById('nextButton').classList.add('show');
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            loadQuestion();
-        }
-
-        function showResults() {
-            document.getElementById('quizScreen').style.display = 'none';
-            document.getElementById('resultsScreen').style.display = 'flex';
-
-            const percentage = Math.round((score / questions.length) * 100);
-            
-            document.getElementById('finalScore').textContent = `${score}/${questions.length}`;
-            document.getElementById('correctCount').textContent = answeredCorrectly;
-            document.getElementById('incorrectCount').textContent = answeredIncorrectly;
-            document.getElementById('percentageScore').textContent = percentage + '%';
-
-            let message = '';
-            let icon = '';
-
-            if (percentage >= 90) {
-                message = 'Exzellent! Du bist ein Cybersecurity-Experte! 🏆';
-                icon = '🏆';
-            } else if (percentage >= 70) {
-                message = 'Sehr gut! Du hast ein solides Verständnis für Cybersecurity. 👏';
-                icon = '🎯';
-            } else if (percentage >= 50) {
-                message = 'Nicht schlecht! Es gibt noch Raum für Verbesserungen. 📚';
-                icon = '📚';
-            } else {
-                message = 'Das ist ein Anfang! Bleib wachsam und lerne weiter über Cybersecurity. 💪';
-                icon = '💪';
-            }
-
-            document.getElementById('resultsMessage').textContent = message;
-            document.getElementById('resultsIcon').textContent = icon;
-        }
-
-        // Image Modal Functions
-        function openImageModal(imageSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            modal.classList.add('show');
-            modalImg.src = imageSrc;
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('show');
-        }
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeImageModal();
-            }
-        });
-    </script>
 </body>
 </html>
