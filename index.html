@@ -2,7 +2,9 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>Security Awareness Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
@@ -360,6 +362,7 @@
         .question-video {
             width: 100%;
             height: auto;
+            max-height: 400px;
             display: block;
             border-radius: 12px;
             background: #000;
@@ -700,7 +703,7 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "deepfake_video_1.mp4",
+                videoUrl: window.location.origin + "/deepfake_video_1.mp4?v=" + Date.now(),
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
@@ -712,13 +715,13 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "real_video_1.mp4",
+                videoUrl: window.location.origin + "/real_video_1.mp4?v=" + Date.now(),
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
                     "Unsicher, weitere Überprüfung nötig"
                 ],
-                correct: 1,
+                correct: 0,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
             },
             {
@@ -835,37 +838,29 @@
                     </div>
                 `;
             } else if (question.type === 'video' && question.videoUrl) {
-                // Check if it's a YouTube embed or local video
-                const isYouTube = question.videoUrl.includes('youtube.com') || question.videoUrl.includes('youtu.be');
-                
-                if (isYouTube) {
-                    mediaHTML = `
-                        <div class="question-media">
-                            <iframe class="question-video" 
-                                    src="${question.videoUrl}" 
-                                    width="100%" 
-                                    height="400"
-                                    frameborder="0" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowfullscreen>
-                            </iframe>
-                            ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
+                mediaHTML = `
+                    <div class="question-media">
+                        <video class="question-video" 
+                               controls 
+                               playsinline 
+                               preload="metadata"
+                               onloadeddata="console.log('Video erfolgreich geladen:', this.src)"
+                               onerror="handleVideoError(this)">
+                            <source src="${question.videoUrl}" type="video/mp4">
+                            Dein Browser unterstützt das Video-Format nicht.
+                        </video>
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(255,51,102,0.1); border-radius: 8px; display: none;" id="videoError${currentQuestion}">
+                            <small style="color: var(--text-secondary);">
+                                <strong>⚠️ Video konnte nicht geladen werden</strong><br>
+                                <small>Mögliche Ursachen:</small><br>
+                                • Datei nicht gefunden: ${question.videoUrl.split('?')[0]}<br>
+                                • Browser-Kompatibilitätsproblem<br>
+                                • Versuche: <a href="${question.videoUrl}" target="_blank" style="color: var(--accent-info);">Video direkt öffnen</a>
+                            </small>
                         </div>
-                    `;
-                } else {
-                    // Local video file
-                    mediaHTML = `
-                        <div class="question-media">
-                            <video class="question-video" controls preload="metadata">
-                                <source src="${question.videoUrl}" type="video/mp4">
-                                <source src="${question.videoUrl.replace('.mp4', '.webm')}" type="video/webm">
-                                <source src="${question.videoUrl.replace('.mp4', '.ogg')}" type="video/ogg">
-                                Dein Browser unterstützt dieses Video nicht.
-                            </video>
-                            ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
-                        </div>
-                    `;
-                }
+                        ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
+                    </div>
+                `;
             }
 
             const questionHTML = `
@@ -891,6 +886,33 @@
             `;
 
             document.getElementById('questionContainer').innerHTML = questionHTML;
+            
+            // Debug-Info für Videos
+            if (question.type === 'video') {
+                console.log(`Video Frage ${currentQuestion + 1}:`, question.videoUrl);
+                checkVideoExists(question.videoUrl.split('?')[0]);
+            }
+        }
+
+        function handleVideoError(videoElement) {
+            console.error('Video Fehler:', videoElement.error);
+            const errorDiv = document.getElementById(`videoError${currentQuestion}`);
+            if (errorDiv) {
+                errorDiv.style.display = 'block';
+            }
+            
+            // Versuche alternative URLs
+            const originalSrc = videoElement.querySelector('source').src;
+            const baseUrl = originalSrc.split('?')[0];
+            
+            // Teste verschiedene URL-Varianten
+            const testUrls = [
+                baseUrl,
+                window.location.origin + "/" + baseUrl.split('/').pop(),
+                baseUrl.replace(window.location.origin + '/', '')
+            ];
+            
+            console.log('Teste alternative URLs:', testUrls);
         }
 
         function selectAnswer(selectedIndex) {
@@ -972,43 +994,69 @@
             modal.classList.remove('show');
         }
 
+        // Video Debugging Functions
+        function checkVideoExists(url) {
+            fetch(url, { method: 'HEAD', cache: 'no-cache' })
+                .then(response => {
+                    console.log(`Video existiert: ${url} - Status: ${response.status}, Type: ${response.headers.get('content-type')}`);
+                    if (!response.ok) {
+                        console.warn(`Video nicht gefunden: ${url}`);
+                    }
+                })
+                .catch(error => {
+                    console.error(`Video Check Fehler für ${url}:`, error.message);
+                });
+        }
+
+        // Debug-Funktion für Videos
+        function debugVideoIssues() {
+            console.log("=== VIDEO DEBUG INFO ===");
+            console.log("Current URL:", window.location.href);
+            console.log("Origin:", window.location.origin);
+            console.log("Video Paths:", [
+                window.location.origin + "/deepfake_video_1.mp4",
+                window.location.origin + "/real_video_1.mp4"
+            ]);
+            
+            // Teste ob Videos existieren
+            const testVideo = (url) => {
+                const cleanUrl = url.split('?')[0];
+                fetch(cleanUrl, { method: 'HEAD', cache: 'no-cache' })
+                    .then(response => {
+                        console.log(`${cleanUrl}:`, {
+                            exists: response.ok,
+                            status: response.status,
+                            type: response.headers.get('content-type'),
+                            size: response.headers.get('content-length')
+                        });
+                    })
+                    .catch(error => {
+                        console.error(`${cleanUrl}:`, error.message);
+                    });
+            };
+            
+            testVideo(window.location.origin + "/deepfake_video_1.mp4");
+            testVideo(window.location.origin + "/real_video_1.mp4");
+        }
+
+        // Aufrufen nach dem Laden
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Quiz geladen - Debug-Modus aktiviert");
+            debugVideoIssues();
+            
+            // Füge globalen Error Handler hinzu
+            window.addEventListener('error', function(e) {
+                if (e.target.tagName === 'VIDEO' || e.target.tagName === 'SOURCE') {
+                    console.error('Globaler Video-Fehler:', e);
+                }
+            });
+        });
+
         // Close modal with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeImageModal();
             }
-        });
-
-        // Video Error Handling
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add error listeners to all videos
-            document.addEventListener('click', function() {
-                setTimeout(() => {
-                    const videos = document.querySelectorAll('video');
-                    videos.forEach(video => {
-                        video.addEventListener('error', function(e) {
-                            console.error('Video Fehler:', e);
-                            const errorMsg = document.createElement('div');
-                            errorMsg.style.cssText = 'background: rgba(255,51,102,0.2); border: 1px solid var(--accent-danger); padding: 1rem; margin-top: 1rem; border-radius: 8px; color: var(--accent-danger);';
-                            errorMsg.innerHTML = `
-                                <strong>⚠️ Video konnte nicht geladen werden</strong><br>
-                                <small>Mögliche Ursachen:</small><br>
-                                • Datei nicht im videos/ Ordner<br>
-                                • Dateiname stimmt nicht: ${this.querySelector('source').src.split('/').pop()}<br>
-                                • Video-Format nicht kompatibel (nutze H.264 MP4)<br>
-                                • Datei nicht auf GitHub hochgeladen
-                            `;
-                            if (!this.nextElementSibling || !this.nextElementSibling.innerHTML.includes('Video konnte nicht')) {
-                                this.parentElement.appendChild(errorMsg);
-                            }
-                        });
-                        
-                        video.addEventListener('loadeddata', function() {
-                            console.log('Video erfolgreich geladen:', this.src);
-                        });
-                    });
-                }, 500);
-            });
         });
     </script>
 </body>
