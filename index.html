@@ -680,6 +680,8 @@
                 options: [
                     "Nein, die E-Mail ist legitim",
                     "Ja, dies ist ein Phishing-Versuch",
+                    "Unsicher, weitere Überprüfung nötig",
+                    "Es ist Spam, aber kein Phishing"
                 ],
                 correct: 1,
                 explanation: "Diese E-Mail ist Phishing weil: 1) Ähnliche, aber falsche Absenderadresse, 2) Falsches Logo der Firma/Behörde, 3) Generische Anrede, 4) Rechtschreibfehler, 5) Dringlichkeit, 6) Gefälschter Link, 7) Falscher Name am Ende der E-Mail"
@@ -698,10 +700,11 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "deepfake_video_1",
+                videoUrl: "deepfake_video_1.mp4",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
+                    "Unsicher, weitere Überprüfung nötig"
                 ],
                 correct: 1,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
@@ -709,12 +712,13 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "real_video_1",
+                videoUrl: "real_video_1.mp4",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
+                    "Unsicher, weitere Überprüfung nötig"
                 ],
-                correct: 0,
+                correct: 1,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
             },
             {
@@ -852,11 +856,14 @@
                     // Local video file
                     mediaHTML = `
                         <div class="question-media">
-                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline>
-                                <source src="${question.videoUrl}" type="mp4">
+                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted>
+                                <source src="${question.videoUrl}" type="video/mp4">
                                 Dein Browser unterstützt dieses Video nicht.
                             </video>
                             ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
+                            <div class="media-caption" style="color: var(--accent-info); font-size: 0.8rem; margin-top: 0.5rem;">
+                                💡 Tipp: Klicke auf das Video und drücke Play. Falls stumm: Klicke auf den Lautsprecher-Button.
+                            </div>
                         </div>
                     `;
                 }
