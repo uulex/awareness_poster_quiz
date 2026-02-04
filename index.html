@@ -680,8 +680,6 @@
                 options: [
                     "Nein, die E-Mail ist legitim",
                     "Ja, dies ist ein Phishing-Versuch",
-                    "Unsicher, weitere Überprüfung nötig",
-                    "Es ist Spam, aber kein Phishing"
                 ],
                 correct: 1,
                 explanation: "Diese E-Mail ist Phishing weil: 1) Ähnliche, aber falsche Absenderadresse, 2) Falsches Logo der Firma/Behörde, 3) Generische Anrede, 4) Rechtschreibfehler, 5) Dringlichkeit, 6) Gefälschter Link, 7) Falscher Name am Ende der E-Mail"
@@ -704,7 +702,6 @@
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
                 ],
                 correct: 1,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
@@ -716,20 +713,19 @@
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
                 ],
-                correct: 1,
+                correct: 0,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
             },
             {
                 question: "Woran kannst du eine verdächtige E-Mail erkennen?",
                 options: [
                     "Die E-Mail enthält Links",
-                    "Dringlichkeit, Rechtschreibfehler und unerwartete Anhänge",
+                    "Sie ist in deutscher Sprache verfasst",
                     "Die E-Mail ist von einer bekannten Firma",
-                    "Sie ist in deutscher Sprache verfasst"
+                    "Dringlichkeit, Rechtschreibfehler und unerwartete Anhänge"
                 ],
-                correct: 1,
+                correct: 3,
                 explanation: "Verdächtige E-Mails zeigen oft Warnsignale wie ungewöhnliche Dringlichkeit, Rechtschreibfehler, unerwartete Anhänge, generische Anreden oder verdächtige Absenderadressen. Sei besonders vorsichtig bei E-Mails, die nach persönlichen Daten fragen."
             },
             {
@@ -757,12 +753,12 @@
             {
                 question: "Was ist Zwei-Faktor-Authentifizierung (2FA)?",
                 options: [
-                    "Ein doppeltes Passwort",
                     "Zusätzliche Sicherheitsebene neben dem Passwort",
+                    "Ein doppeltes Passwort",
                     "Ein stärkeres Passwort",
                     "Eine Art Firewall"
                 ],
-                correct: 1,
+                correct: 0,
                 explanation: "2FA ist eine zusätzliche Sicherheitsebene, die neben dem Passwort einen zweiten Nachweis verlangt (z.B. SMS-Code, Authenticator-App oder Biometrie). Selbst wenn das Passwort gestohlen wird, kann ohne den zweiten Faktor kein Zugriff erfolgen."
             },
             {
@@ -780,11 +776,11 @@
                 question: "Welche dieser Praktiken ist am sichersten für öffentliches WLAN?",
                 options: [
                     "Ohne Schutzmaßnahmen surfen",
-                    "Verwendung eines VPN (Virtual Private Network)",
+                    "Automatisch mit allen Netzwerken verbinden",
                     "Nur HTTP-Websites besuchen",
-                    "Automatisch mit allen Netzwerken verbinden"
+                    "Verwendung eines VPN (Virtual Private Network)"
                 ],
-                correct: 1,
+                correct: 3,
                 explanation: "In öffentlichen WLANs solltest du ein VPN verwenden, das deine Daten verschlüsselt. Öffentliche Netzwerke sind unsicher und Angreifer können leicht Datenverkehr abfangen. Vermeide auch sensible Transaktionen in öffentlichen WLANs."
             },
             {
