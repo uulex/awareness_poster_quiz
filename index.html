@@ -15,7 +15,7 @@
             --accent-info: #00d4ff;
             --text-primary: #e8edf4;
             --text-secondary: #8b95b0;
-            --shadow-glow: 0 0 40px rgba(255, 50, 102, 0.3);
+            --shadow-glow: 0 0 40px rgba(255, 51, 102, 0.3);
         }
 
         * {
@@ -856,13 +856,14 @@
                     // Local video file
                     mediaHTML = `
                         <div class="question-media">
-                            <video class="question-video" controls preload="metadata">
+                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted>
                                 <source src="${question.videoUrl}" type="video/mp4">
-                                <source src="${question.videoUrl.replace('.mp4', '.webm')}" type="video/webm">
-                                <source src="${question.videoUrl.replace('.mp4', '.ogg')}" type="video/ogg">
                                 Dein Browser unterstützt dieses Video nicht.
                             </video>
                             ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
+                            <div class="media-caption" style="color: var(--accent-info); font-size: 0.8rem; margin-top: 0.5rem;">
+                                💡 Tipp: Klicke auf das Video und drücke Play. Falls stumm: Klicke auf den Lautsprecher-Button.
+                            </div>
                         </div>
                     `;
                 }
@@ -986,17 +987,29 @@
                 setTimeout(() => {
                     const videos = document.querySelectorAll('video');
                     videos.forEach(video => {
+                        // Auto-unmute on first interaction
+                        video.addEventListener('play', function() {
+                            this.muted = false;
+                        }, { once: true });
+                        
+                        // Click to unmute
+                        video.addEventListener('click', function() {
+                            if (this.muted) {
+                                this.muted = false;
+                                console.log('Video unmuted');
+                            }
+                        });
+                        
                         video.addEventListener('error', function(e) {
                             console.error('Video Fehler:', e);
                             const errorMsg = document.createElement('div');
                             errorMsg.style.cssText = 'background: rgba(255,51,102,0.2); border: 1px solid var(--accent-danger); padding: 1rem; margin-top: 1rem; border-radius: 8px; color: var(--accent-danger);';
                             errorMsg.innerHTML = `
                                 <strong>⚠️ Video konnte nicht geladen werden</strong><br>
-                                <small>Mögliche Ursachen:</small><br>
-                                • Datei nicht im videos/ Ordner<br>
-                                • Dateiname stimmt nicht: ${this.querySelector('source').src.split('/').pop()}<br>
-                                • Video-Format nicht kompatibel (nutze H.264 MP4)<br>
-                                • Datei nicht auf GitHub hochgeladen
+                                <small>Versuche:</small><br>
+                                • Seite neu laden (Strg+Shift+R)<br>
+                                • Anderen Browser testen (Firefox, Edge)<br>
+                                • Video-URL direkt öffnen: <a href="${this.querySelector('source').src}" target="_blank" style="color: var(--accent-info);">Direktlink</a>
                             `;
                             if (!this.nextElementSibling || !this.nextElementSibling.innerHTML.includes('Video konnte nicht')) {
                                 this.parentElement.appendChild(errorMsg);
@@ -1005,7 +1018,12 @@
                         
                         video.addEventListener('loadeddata', function() {
                             console.log('Video erfolgreich geladen:', this.src);
+                            console.log('Video Dimensionen:', this.videoWidth, 'x', this.videoHeight);
+                            console.log('Video Dauer:', this.duration, 'Sekunden');
                         });
+                        
+                        // Force load
+                        video.load();
                     });
                 }, 500);
             });
