@@ -709,7 +709,7 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "https://media.githubusercontent.com/media/uulex/awareness_poster_quiz/master/real_video_1.mp4",
+                videoUrl: "real_video_1.mp4",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
@@ -852,7 +852,7 @@
                     // Local video file
                     mediaHTML = `
                         <div class="question-media">
-                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted autoplay loop>
+                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted>
                                 <source src="${question.videoUrl}" type="video/mp4">
                                 Dein Browser unterstützt dieses Video nicht.
                             </video>
