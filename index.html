@@ -698,7 +698,7 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "https://www.youtube.com/embed/67DJ0YzyqnE",
+                videoUrl: "deepfake_video_1",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
@@ -709,7 +709,7 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "https://www.youtube.com/embed/PN7lqtLsXlE",
+                videoUrl: "real_video_1",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
@@ -853,7 +853,7 @@
                     mediaHTML = `
                         <div class="question-media">
                             <video class="question-video" controls preload="auto" playsinline webkit-playsinline>
-                                <source src="${question.videoUrl}" type="gif">
+                                <source src="${question.videoUrl}" type="mp4">
                                 Dein Browser unterstützt dieses Video nicht.
                             </video>
                             ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
