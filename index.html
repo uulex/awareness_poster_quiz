@@ -680,8 +680,6 @@
                 options: [
                     "Nein, die E-Mail ist legitim",
                     "Ja, dies ist ein Phishing-Versuch",
-                    "Unsicher, weitere Überprüfung nötig",
-                    "Es ist Spam, aber kein Phishing"
                 ],
                 correct: 1,
                 explanation: "Diese E-Mail ist Phishing weil: 1) Ähnliche, aber falsche Absenderadresse, 2) Falsches Logo der Firma/Behörde, 3) Generische Anrede, 4) Rechtschreibfehler, 5) Dringlichkeit, 6) Gefälschter Link, 7) Falscher Name am Ende der E-Mail"
@@ -704,7 +702,6 @@
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
                 ],
                 correct: 1,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
@@ -712,13 +709,12 @@
             {
                 question: "Ist dies ein Deepfake?",
                 type: "video",
-                videoUrl: "real_video_1.mp4",
+                videoUrl: "https://media.githubusercontent.com/media/uulex/awareness_poster_quiz/real_video_1.mp4",
                 options: [
                     "Nein, das Video ist legitim",
                     "Ja, dies ist ein Deepfake-Video",
-                    "Unsicher, weitere Überprüfung nötig"
                 ],
-                correct: 1,
+                correct: 0,
                 explanation: "Achte besonders auf die Augen und den Mund, versuche auch immer die Quelle des Videos zu verifizieren"
             },
             {
