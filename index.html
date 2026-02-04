@@ -856,14 +856,11 @@
                     // Local video file
                     mediaHTML = `
                         <div class="question-media">
-                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted>
+                            <video class="question-video" controls preload="auto" playsinline webkit-playsinline muted autoplay loop>
                                 <source src="${question.videoUrl}" type="video/mp4">
                                 Dein Browser unterstützt dieses Video nicht.
                             </video>
                             ${question.videoCaption ? `<div class="media-caption">${question.videoCaption}</div>` : ''}
-                            <div class="media-caption" style="color: var(--accent-info); font-size: 0.8rem; margin-top: 0.5rem;">
-                                💡 Tipp: Klicke auf das Video und drücke Play. Falls stumm: Klicke auf den Lautsprecher-Button.
-                            </div>
                         </div>
                     `;
                 }
